@@ -22,31 +22,46 @@ while j < 3:
 for i in range(0,9): print(grid[i])
 print('\n')
 
+                                        
+#shiftGrid = [0,1,2]
+#random.shuffle(shiftGrid)
 
-j = 0                                           
-while j < 3:    
-    #i = 0
-    #while i < 3:                    #shifting rows in the main grid
-    #    buf = grid[shiftRow[i] + j]
-    #    grid[shiftRow[i] + j] = grid[shiftRow[-i]]
-    #    grid[shiftRow[-i]] = buf
-    #    i += 1
+def shift_rows(grid, shiftRow):                     #shifting rows(cols) in the segment
+    shiftGrid = [0,1,2]
+    random.shuffle(shiftGrid)
+    j = 0                                           
+    while j < 3:    
+        i = 0
+        #print('shiftGrid = ',shiftGrid,'\n', 'shiftRow = ',shiftRow,'\n')
+        while i < 3:                  
+            buf = grid[shiftRow[j] + shiftGrid[i]]
+            grid[shiftRow[j] + shiftGrid[i]] = grid[shiftRow[j] + shiftGrid[i-1]]
+            grid[shiftRow[j] + shiftGrid[i-1]] = buf
+            i += 1                
+        j += 1
+    return(grid)
 
-#print('\t shifting rows in the main grid \n')
-#for i in range(0,9): print(grid[i])
-#print('\n')
-
-def grid_transpose(grid):               # transpose main grid
+def grid_transpose(grid):                                       # transpose main grid
     grid = np.array(grid)         
     grid = grid.transpose()
     return(grid)
 
-grid_transpose(grid)
+print('shifting rows in the segment \n')
+shift_rows(grid, shiftRow)
 for i in range(0,9): print(grid[i])
 print('\n')
 
-#i = 0
-#while i < 5:                    #shifting rows(cols) in the main grid
+print('transpose main grid \n')
+grid_transpose(grid)
+for i in range(0,9): print(grid[i])
+
+print('shifting rows in the segment \n')
+shift_rows(grid, shiftRow)
+for i in range(0,9): print(grid[i])
+print('\n')
+
+#i = 0                                                           #shifting rows(cols) in the grid 
+#while i < 5:                  
 #    buf = trGrid[shiftRow[i]]
 #    trGrid[shiftRow[i]] = trGrid[shiftRow[-i]]
 #    trGrid[shiftRow[-i]] = buf
