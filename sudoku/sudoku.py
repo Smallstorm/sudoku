@@ -19,54 +19,47 @@ while j < 3:
         i += 1
     j += 1
 
+
 for i in range(0,9): print(grid[i])
 print('\n')
 
-                                        
-#shiftGrid = [0,1,2]
-#random.shuffle(shiftGrid)
+                                                        #shifting rows(cols) in the segment
 
-def shift_rows(grid, shiftRow):                     #shifting rows(cols) in the segment
+def shiftRowsInSeg(grid, shiftRow):
     shiftGrid = [0,1,2]
     random.shuffle(shiftGrid)
-    j = 0                                           
-    while j < 3:    
+    j = 0
+    while j < 3:
         i = 0
-        #print('shiftGrid = ',shiftGrid,'\n', 'shiftRow = ',shiftRow,'\n')
         while i < 3:                  
-            buf = grid[shiftRow[j] + shiftGrid[i]]
+            buf = grid[shiftRow[j] + shiftGrid[i]]        
             grid[shiftRow[j] + shiftGrid[i]] = grid[shiftRow[j] + shiftGrid[i-1]]
             grid[shiftRow[j] + shiftGrid[i-1]] = buf
-            i += 1                
+            i += 1
         j += 1
     return(grid)
 
-def grid_transpose(grid):                                       # transpose main grid
-    grid = np.array(grid)         
-    grid = grid.transpose()
+         
+def grid_transpose(TrGrid):                                       # transpose main grid
+    grid = [[TrGrid[j][i] for j in range(len(TrGrid))] for i in range(len(TrGrid[0]))]
     return(grid)
 
-print('shifting rows in the segment \n')
-shift_rows(grid, shiftRow)
+
+
+grid = grid_transpose(grid)
 for i in range(0,9): print(grid[i])
 print('\n')
 
-print('transpose main grid \n')
-grid_transpose(grid)
-for i in range(0,9): print(grid[i])
 
-print('shifting rows in the segment \n')
-shift_rows(grid, shiftRow)
+j = 0
+while j < 3:
+    shiftRowsInSeg(grid, shiftRow)   
+    for i in range(0,9): print(grid[i])
+    print('\n')
+    j += 1
+
+grid = grid_transpose(grid)
 for i in range(0,9): print(grid[i])
 print('\n')
 
-#i = 0                                                           #shifting rows(cols) in the grid 
-#while i < 5:                  
-#    buf = trGrid[shiftRow[i]]
-#    trGrid[shiftRow[i]] = trGrid[shiftRow[-i]]
-#    trGrid[shiftRow[-i]] = buf
-#    i += 1
 
-#print('\t shifting rows(cols) in the main grid \n')
-#for i in range(0,9): print(trGrid[i])
-#print('\n')
