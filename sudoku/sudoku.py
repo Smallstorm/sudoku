@@ -62,17 +62,43 @@ def grid_transpose(Grid):
     grid = [[Grid[j][i] for j in range(len(Grid))] for i in range(len(Grid[0]))]
     return(grid)
 
+# sudoku mixing
+def sudoku_mix(n):    
+    mix_func = ['grid_transpose(grid)', 'shiftRowsInSeg(grid, shiftRow)', 'shiftSegmsInGrid(grid,shiftRow)']
+    for i in range(1,n):
+        id_func = random.randrange(0,len(mix_func),1)
+        grid = eval(mix_func[id_func])    
+    print('\n')    
+    for j in range(0,9): print(grid[j])
+    return
+
+# d - sudoku difficulty - must be less then 81 
+def sudoku_zero(d,adr):
+    i = 0
+    while(i < d):                
+        grid[adr[i][0]][adr[i][1]] = 0            
+        i += 1
+    return
+
 
 ################################################################################################
 # function cols
 ################################################################################################
 
-mix_func = ['grid_transpose(grid)', 'shiftRowsInSeg(grid, shiftRow)', 'shiftSegmsInGrid(grid,shiftRow)']
 
-for i in range(1,20):
-    id_func = random.randrange(0,len(mix_func),1)
-    grid = eval(mix_func[id_func])
-    print(id_func,'\n')
-print('\n')    
+
+sudoku_mix(200)
+
+# adress generator
+adr = list()
+for i in range(9):
+    for j in range(9):    
+        adr.append([i,j])
+random.shuffle(adr)        
+
+sudoku_zero(80,adr)
+
 for j in range(0,9): print(grid[j])
+
+
 
