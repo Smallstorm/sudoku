@@ -1,27 +1,14 @@
 import random
 import numpy as np
 
-# defRow = [1,2,3,4,5,6,7,8,9]
-# shiftRow = list(range(0,9,3))
-# grid = list()
-
-
-# j = 0                                           
-# while j < 3:    
-#     i = 0
-#     while i < 3:                   
-#         row = defRow[shiftRow[i] + j:] + defRow[:shiftRow[i] + j]
-#         grid.append(row)    
-#         i += 1
-#     j += 1
-
-# print('base grid')
-# for i in range(0,9): print(grid[i])
-# print('\n')
+defRow = [1,2,3,4,5,6,7,8,9]
+shiftRow = list(range(0,9,3))
+grid = list()
 
 ######################################################################################
 # function def
 ######################################################################################  
+
 
 #shifting rows(cols) in the segment
 def shiftRowsInSeg(grid, shiftRow):
@@ -62,14 +49,13 @@ def grid_transpose(grid):
     return(grid)
 
 # sudoku mixing
-# def sudoku_mix(n):    
-#     mix_func = ['grid_transpose(grid)', 'shiftRowsInSeg(grid, shiftRow)', 'shiftSegmsInGrid(grid,shiftRow)']
-#     for i in range(1,n):
-#         id_func = random.randrange(0,len(mix_func),1)
-#         grid = eval(mix_func[id_func])    
-#     # print('\n')    
-#     for j in range(0,9): print(grid[j])
-#     return
+def sudoku_mix(grid,n):    
+    mix_func = ['grid_transpose(grid)', 'shiftRowsInSeg(grid, shiftRow)', 'shiftSegmsInGrid(grid,shiftRow)']
+    for i in range(1,n):
+        id_func = random.randrange(0,len(mix_func),1)
+        grid = eval(mix_func[id_func])       
+    for j in range(0,9): print(grid[j])
+    return
 
 # adress generator
 adr = list()
