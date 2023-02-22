@@ -32,10 +32,21 @@ for i in range(9):
         adr.append([i,j])
 random.shuffle(adr)        
 
-sudoku_func.sudoku_zero(grid,50,adr)
+difficulty = 50
+sudoku_func.sudoku_zero(grid,difficulty,adr)
 
 print('\n','sudoku zeroed')
 for j in range(0,9): print(grid[j])
 
 A = sudoku_func.possible(grid,1,2,1)
 print(A)
+
+# zero addresses
+zeroes = list()
+for i in range(difficulty):
+    zeroes.append(sudoku_func.next_empty(grid))
+    
+
+for j in range(0,difficulty): print(zeroes[j])
+
+    

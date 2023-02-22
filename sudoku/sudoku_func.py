@@ -75,7 +75,6 @@ def sudoku_zero(grid,d,adr):
 # Check if Number n can be in row i column j
 # x - row, y - column, n - supposed number
 def possible(grid,x,y,n):
-    # global grid
     for i in range(9):
         if (grid[x][i] == n or grid[i][y] == n):
             return False
@@ -87,5 +86,12 @@ def possible(grid,x,y,n):
                 return False
     return True                
 
+
+def next_empty(grid):
+    for i in range(9):
+        for j in range(9):
+            if (grid[i][j] == 0):
+                grid[i][j] = -1
+                return(i,j)                     
 
 
