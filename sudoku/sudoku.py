@@ -38,15 +38,38 @@ sudoku_func.sudoku_zero(grid,difficulty,adr)
 print('\n','sudoku zeroed')
 for j in range(0,9): print(grid[j])
 
-A = sudoku_func.possible(grid,1,2,1)
-print(A)
 
 # zero addresses
 zeroes = list()
-for i in range(difficulty):
+for i in range(difficulty,):
     zeroes.append(sudoku_func.next_empty(grid))
-    
 
-for j in range(0,difficulty): print(zeroes[j])
 
+def solve(grid):
+    for d in range(difficulty):
+        n = 1   
+        got_answer = False    
+        while(not got_answer): 
+            print('got answer =',got_answer)  
+            while(0 < n < 10):
+                print(n)
+                if(sudoku_func.possible(grid,zeroes[d][0],zeroes[d][1],n)):
+                    grid[zeroes[d][0]][zeroes[d][1]] = n 
+                    print('possible  : row = ',zeroes[d][0],'col = ',zeroes[d][1],'n = ',n,'d = ',d)                     
+                    got_answer = True
+                    break  
+                n += 1
+            if(got_answer):
+                print('got answer',got_answer, 'for','row = ', zeroes[d][0],'col = ',zeroes[d][1],'d = ',d)
+                break
+            else:
+                grid[zeroes[d][0]][zeroes[d][1]] = -1                  
+                d -= 1
+                print('backtrack for','row = ', zeroes[d][0],'col = ',zeroes[d][1],'d = ',d)
+            break    
+
+solve(grid)
+
+
+for j in range(9): print(grid[j])
     
