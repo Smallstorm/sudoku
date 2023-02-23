@@ -32,7 +32,7 @@ for i in range(9):
         adr.append([i,j])
 random.shuffle(adr)        
 
-difficulty = 50
+difficulty = 30
 sudoku_func.sudoku_zero(grid,difficulty,adr)
 
 print('\n','sudoku zeroed')
@@ -45,10 +45,13 @@ for i in range(difficulty,):
     zeroes.append(sudoku_func.next_empty(grid))
 
 
-def solve(grid):
-    for d in range(difficulty):
+
+def solve(grid):    
+    d = 0
+    while(d < difficulty):
         n = 1   
         got_answer = False    
+        print('\nd = ',d)
         while(not got_answer): 
             print('got answer =',got_answer)  
             while(0 < n < 10):
@@ -57,15 +60,13 @@ def solve(grid):
                     grid[zeroes[d][0]][zeroes[d][1]] = n 
                     print('possible  : row = ',zeroes[d][0],'col = ',zeroes[d][1],'n = ',n,'d = ',d)                     
                     got_answer = True
+                    d += 1
                     break  
-                n += 1
-            if(got_answer):
-                print('got answer',got_answer, 'for','row = ', zeroes[d][0],'col = ',zeroes[d][1],'d = ',d)
-                break
+                n += 1            
             else:
-                grid[zeroes[d][0]][zeroes[d][1]] = -1                  
+                grid[zeroes[d][0]][zeroes[d][1]] = -1                                                  
+                print('backtrack from','row = ', zeroes[d][0],'col = ',zeroes[d][1],'d = ',d,'\nTo row = ', zeroes[d-1][0],'col = ',zeroes[d-1][1],'d = ',d-1)
                 d -= 1
-                print('backtrack for','row = ', zeroes[d][0],'col = ',zeroes[d][1],'d = ',d)
             break    
 
 solve(grid)
