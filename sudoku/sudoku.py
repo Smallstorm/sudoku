@@ -1,125 +1,80 @@
+import sudoku_func
 import random
-import numpy as np
+import sys
 
-# defRow = [1,2,3,4,5,6,7,8,9]
-# shiftRow = list(range(0,9,3))
-# grid = list()
+defRow = [1,2,3,4,5,6,7,8,9]
+shiftRow = list(range(0,9,3))
+grid = list()
 
 
-# j = 0                                           
-# while j < 3:    
-#     i = 0
-#     while i < 3:                   
-#         row = defRow[shiftRow[i] + j:] + defRow[:shiftRow[i] + j]
-#         grid.append(row)    
-#         i += 1
-#     j += 1
-
-# print('base grid')
-# for i in range(0,9): print(grid[i])
-# print('\n')
-
-######################################################################################
-# function def
-######################################################################################  
-
-#shifting rows(cols) in the segment
-def shiftRowsInSeg(grid, shiftRow):
-    shiftGrid = [0,1,2]
-    random.shuffle(shiftGrid)
-    j = 0
-    while j < 3:
-        i = 0
-        while i < 3:                  
-            buf = grid[shiftRow[j] + shiftGrid[i]]        
-            grid[shiftRow[j] + shiftGrid[i]] = grid[shiftRow[j] + shiftGrid[i-1]]
-            grid[shiftRow[j] + shiftGrid[i-1]] = buf
-            i += 1
-        j += 1
-    return(grid)
-
-#shifting segments
-def shiftSegmsInGrid(grid,shiftRow):
-    shiftGrid = [0,1,2]
-    random.shuffle(shiftGrid)
+#grid init
+j = 0                                           
+while j < 3:    
     i = 0
-    while i < 3:                  
-        buf0 = grid[shiftRow[i]]
-        buf1 = grid[shiftRow[i] + 1]        
-        buf2 = grid[shiftRow[i] + 2]        
-        grid[shiftRow[i] + 0] = grid[shiftRow[i] + 0 - 3]
-        grid[shiftRow[i] + 1] = grid[shiftRow[i] + 1 - 3]
-        grid[shiftRow[i] + 2] = grid[shiftRow[i] + 2 - 3]
-        grid[shiftRow[i] + 0 - 3] = buf0
-        grid[shiftRow[i] + 1 - 3] = buf1
-        grid[shiftRow[i] + 2 - 3] = buf2
+    while i < 3:                   
+        row = defRow[shiftRow[i] + j:] + defRow[:shiftRow[i] + j]
+        grid.append(row)    
         i += 1
-        return(grid)
+    j += 1    
 
-# transpose main grid         
-def grid_transpose(grid):                                       
-    grid = [[grid[j][i] for j in range(len(grid))] for i in range(len(grid[0]))]
-    return(grid)
+print('base grid')
+for i in range(0,9): print(grid[i])
+print('\n')
 
-# sudoku mixing
-# def sudoku_mix(n):    
-#     mix_func = ['grid_transpose(grid)', 'shiftRowsInSeg(grid, shiftRow)', 'shiftSegmsInGrid(grid,shiftRow)']
-#     for i in range(1,n):
-#         id_func = random.randrange(0,len(mix_func),1)
-#         grid = eval(mix_func[id_func])    
-#     # print('\n')    
-#     for j in range(0,9): print(grid[j])
-#     return
+print('sudoku mixed')
+grid = sudoku_func.sudoku_mix(grid,20000)
+print('\n') 
+for j in range(0,9): print(grid[j])
 
 # adress generator
 adr = list()
 for i in range(9):
     for j in range(9):    
         adr.append([i,j])
-random.shuffle(adr)    
+random.shuffle(adr)        
 
-# d - sudoku difficulty - must be less then 81 
-def sudoku_zero(grid,d,adr):
-    i = 0
-    while(i < d):                
-        grid[adr[i][0]][adr[i][1]] = 0            
-        i += 1
-    return
+difficulty = 40
+sudoku_func.sudoku_zero(grid,difficulty,adr)
 
-# Check if Number n can be in row i column j
-# x - row, y - column, n - supposed number
-def possible(x,y,n):
-    global grid
-    for i in range(9):
-        if (grid[x][i] == n or grid[i][y] == n):
-            return False
-    x0 = (x//3)*3                    
-    y0 = (y//3)*3                            
-    for i in range(3):
-        for j in range(3):
-            if(grid[x0 + i][y0 + j] == n):
-                return False
-    return True                
+print('\n','sudoku zeroed')
+for j in range(0,9): print(grid[j])
 
+# zero addresses
+zeroes = list()
+for i in range(difficulty,):
+    zeroes.append(sudoku_func.next_empty(grid))
 
-################################################################################################
-# function cols
-################################################################################################
+print('before\n')
+for j in range(9): print(grid[j])
 
+def solve(grid):    
+    d = 0
+    while(d < difficulty):
+        n = 1   
+        got_answer = False            
+        print('\nd = ',d)
+        while(not got_answer): 
+            print('got answer =',got_answer)  
+            while(0 < n < 10):
+                print(n)
+                if(sudoku_func.possible(grid,zeroes[d][0],zeroes[d][1],n)):
+                    grid[zeroes[d][0]][zeroes[d][1]] = n 
+                    print('possible  : ','n = ',n,'d = ',d)                     
+                    got_answer = True
+                    d += 1
+                    skip = n
+                    break  # to next d from while
+                n += 1      
 
-# print('sudoku mixed')
-# sudoku_mix(2000)
+            else:
+                grid[zeroes[d][0]][zeroes[d][1]] = -1                                                  
+                print('backtrack from','d = ',d,'\nTo row = ', zeroes[d-1][0],'col = ',zeroes[d-1][1],'d = ',d-1)
+                print('n from else = ',skip)
+                d -= 1
+            break  # previous d from while else  
 
-# # adress generator
-# adr = list()
-# for i in range(9):
-#     for j in range(9):    
-#         adr.append([i,j])
-# random.shuffle(adr)        
+solve(grid)
 
-# sudoku_zero(grid,50,adr)
-
-# print('\n','sudoku zeroed')
-# for j in range(0,9): print(grid[j])
-
-
+print('\n after\n')
+for j in range(9): print(grid[j])
+    
